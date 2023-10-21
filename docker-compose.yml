@@ -19,8 +19,9 @@ version: "3"
 
 services:
   spark-iceberg:
-    image: tabulario/spark-iceberg
+    image: tab-iceberg
     container_name: spark-iceberg
+    network_mode: "host"
     build: spark/
     depends_on:
       - rest
@@ -41,6 +42,7 @@ services:
   rest:
     image: tabulario/iceberg-rest
     container_name: iceberg-rest
+    network_mode: "host"
     ports:
       - 8181:8181
     environment:
@@ -53,6 +55,7 @@ services:
   minio:
     image: minio/minio
     container_name: minio
+    network_mode: "host"
     environment:
       - MINIO_ROOT_USER=admin
       - MINIO_ROOT_PASSWORD=password
@@ -66,8 +69,7 @@ services:
       - minio
     image: minio/mc
     container_name: mc
-    networks:
-      iceberg_net:
+    network_mode: "host"
     environment:
       - AWS_ACCESS_KEY_ID=admin
       - AWS_SECRET_ACCESS_KEY=password
